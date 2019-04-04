@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxhf.mapper.BookMapper">
+
+	<!-- 向我们做关联查询的时候 有多张表要关联要赋值的时候 我们用resultMap来完成 resultMap他是一个id唯一值 type:查询的结果返回的类型 
+		id:标签标示 表中的主键 column：表 property：类上面的属性 collection:配置集合的 ofType:指定集合的类型的 -->
+	<resultMap type="com.lxhf.bean.Book" id="bookCategoryResultMap">
+
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="author" column="author" />
+		<result property="price" column="price" />
+		<result property="currprice" column="currprice" />
+		<result property="discount" column="discount" />
+		<result property="press" column="press" />
+		<result property="publishtime" column="publishtime" />
+		<result property="edition" column="edition" />
+		<result property="pagenum" column="pagenum" />
+		<result property="wordnum" column="wordnum" />
+		<result property="printtime" column="printtime" />
+		<result property="booksize" column="booksize" />
+		<result property="paper" column="paper" />
+		<result property="image_w" column="image_w" />
+		<result property="image_b" column="image_b" />
+		
+		<association property="category" javaType="com.lxhf.bean.Category">
+			<id property="id" column="cid" />
+			<result property="name" column="cname" />
+			<result property="description" column="cdescription" />
+		</association>   
+
+	</resultMap>
+	
+	<!-- 获取所有图书信息 book.id,book.name,book.author,book.price,book.path,book.filename,book.description, book.categoryid,-->
+	<select id="findBookAll" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id where book.status = 1
+	</select>
+	
+	<!-- 添加图书信息 -->
+	<insert id="addBook" parameterType="com.lxhf.bean.Book">
+		insert into book
+		(name, description, author, price, currprice, discount, press, publishtime, edition, 
+		pagenum, wordnum, printtime, booksize, paper, image_w, image_b, categoryid) 
+		value
+		(#{name}, #{description}, #{author}, #{price}, #{currprice}, #{discount}, #{press}, 
+		#{publishtime}, #{edition}, #{pagenum}, #{wordnum}, #{printtime}, #{booksize}, #{paper}, 
+		#{image_w}, #{image_b}, #{category.id})
+	</insert>
+
+	<!-- 删除指定图书 -->
+<!-- 	<delete id="deleteBook" parameterType="int">
+		delete from book where id = #{id}
+	</delete> -->
+	<update id="deleteBook" parameterType="int">
+		update book set status = 0 where id = #{id}
+	</update>
+	
+	<!-- 删除一个分类的所有图书 -->
+	<!-- <delete id="deleteBookByCategoryId" parameterType="int">
+		delete 
+		FROM book where categoryid = #{categoryId}
+	</delete> -->
+	<update id="deleteBookByCategoryId" parameterType="int">
+		update book set status = 0 where categoryid = #{categoryId}
+	</update>
+	
+	<!-- 更新图书信息 -->
+	<update id="updateBook" parameterType="com.lxhf.bean.Book">
+		update book set 
+		name=#{name}, description=#{description}, author=#{author}, price=#{price}, 
+		currprice=#{currprice}, discount=#{discount}, press=#{press}, publishtime=#{publishtime}, 
+		edition=#{edition}, pagenum=#{pagenum}, wordnum=#{wordnum}, printtime=#{printtime}, 
+		booksize=#{booksize}, paper=#{paper}, image_w=#{image_w}, image_b=#{image_b}, 
+		categoryid=#{category.id} where id = #{id}
+	</update>
+	
+	<!-- 查找指定图书 -->
+	<select id="getBookById" parameterType="int" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id where book.id = #{id} and book.status = 1
+	</select>
+	
+	<!-- 获取图书总数 -->
+	<select id="getCount" resultType="int">
+		select count(*) from book where status = 1
+	</select>
+	
+	<!-- 获取指定页的指定数量的图书 -->
+	<select id="findPage" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*, 
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where book.status = 1
+		LIMIT #{num}, #{size}
+	</select>
+	
+	<!-- 获取指定分类信息的图书数量 -->
+	<select id="getCategoryCount" parameterType="int" resultType="int">
+		select count(*) from book where categoryid = #{categoryId} and status = 1
+	</select>
+	
+	<!-- 获取指定页指定分类的指定数量的图书 -->
+	<select id="findPageCategory" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where category.id = #{categoryid} and book.status = 1
+		LIMIT #{current}, #{size}
+	</select>
+	
+	<!-- 根据图书名字查询 -->
+	<select id="findPageBookByName" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where book.name like '%${name}%' and book.status=1
+		LIMIT #{current}, #{size}
+	</select>
+	
+	<!-- 查询包含名字的图书数量 -->
+	<select id="getNameCount" parameterType="string" resultType="int">
+		select count(*) from book where name like '%${name}%' and status=1;
+	</select>
+	
+	<!-- 根据图书描述查询 -->
+	<select id="findPageBookByDesc" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where book.description like '%${desc}%' and book.status=1
+		LIMIT #{current}, #{size}
+	</select>
+	
+	<!-- 查询包含描述的图书数量 -->
+	<select id="getDescCount" parameterType="string" resultType="int">
+		select count(*) from book where description like '%${desc}%' and status=1;
+	</select>
+	
+	<!-- 根据图书作者查询 -->
+	<select id="findPageBookByAuthor" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where book.author like '%${author}%' and book.status=1
+		LIMIT #{current}, #{size}
+	</select>
+	
+	<!-- 查询包含作者的图书数量 -->
+	<select id="getAuthorCount" parameterType="string" resultType="int">
+		select count(*) from book where author like '%${author}%' and status=1;
+	</select>
+	
+	<!-- 根据图书分类名字查询 -->
+	<select id="findPageBookByCName" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where category.name like '%${cname}%' and book.status=1
+		LIMIT #{current}, #{size}
+	</select>
+	
+	<!-- 查询包含分类名称的图书数量 -->
+	<select id="getCNameCount" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where category.name like '%${cname}%' and book.status=1;
+	</select>
+	
+	<!-- 根据图书分类描述查询 -->
+	<select id="findPageBookByCDesc" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where category.description like '%${cdesc}%' and book.status=1
+		LIMIT #{current}, #{size}
+	</select>
+	
+	<!-- 查询包含分类描述的图书数量 -->
+	<select id="getCDescCount" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where category.description like '%${cdesc}%' and book.status=1;
+	</select>
+	
+	<!-- 根据所有字段查询 -->
+	<select id="findPageBookByAll" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where book.status=1 and 
+		(
+		book.name like '%${all}%' or
+		book.author like '%${all}%' or
+		book.description like '%${all}%' or
+		category.name like '%${all}%' or
+		category.description like '%${all}%'
+		)
+		LIMIT #{current}, #{size}
+	</select>
+	
+	<!-- 查询所有包含字段的图书数量 -->
+	<select id="getAllCount" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where book.status=1 and 
+		(
+		book.name like '%${all}%' or
+		book.author like '%${all}%' or
+		book.description like '%${all}%' or
+		category.name like '%${all}%' or
+		category.description like '%${all}%'
+		)
+		
+	</select>
+	
+	<!-- 根据图书出版社描述查询 -->
+	<select id="findPageBookByPress" resultMap="bookCategoryResultMap">
+		SELECT 
+		book.*,
+		category.id cid, category.name cname, category.description cdescription
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where book.press=#{press} and book.status=1
+		LIMIT #{current}, #{size}
+	</select>
+	
+	<!-- 查询包含出版社的图书数量 -->
+	<select id="getPressCount" parameterType="string" resultType="int">
+		SELECT count(*)
+		FROM book LEFT JOIN category ON book.categoryid = category.id 
+		where book.press=#{press} and book.status=1
+	</select>
+	
+</mapper>
