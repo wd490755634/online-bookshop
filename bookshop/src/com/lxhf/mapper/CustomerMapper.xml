@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxhf.mapper.CustomerMapper">
+	<!-- 查询是否存在用户 -->
+	<select id="findCustomerByUsernameAndPassword"  resultType="com.lxhf.bean.Customer" parameterType="string">
+		select * from customer where username = #{username} and password = #{password}
+	</select>
+	
+	<!-- 根据用户名查询用户 -->
+	<select id="findByUsername"  resultType="com.lxhf.bean.Customer" parameterType="string">
+		select * from customer where username = #{username}
+	</select>
+	
+	<!-- 根据用户角色id查询权限 -->
+	<select id="findCharacter"  resultType="string" parameterType="int">
+		select type from characters where id = #{id}
+	</select>
+
+	<!-- 更新用户登录状态 -->
+	<update id="updateCustomerStatusById"  >
+		update customer set status = #{param2} where id = #{param1}
+	</update>
+	
+	<!-- 根据id查询用户 -->
+	<select id="findCustomerById"  resultType="com.lxhf.bean.Customer" parameterType="int">
+		select * from customer where id = #{id}
+	</select>
+	
+	<!-- 插入用户 -->
+	<insert id="addOneCustomer" parameterType="com.lxhf.bean.Customer">
+		insert into customer(username,password,nickname,phonenum,email,address) value(#{username},#{password},#{nickname},#{phonenum},#{email},#{address})
+	</insert>
+</mapper>
