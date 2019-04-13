@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,18 +21,18 @@ public class LoginController {
 	@Autowired
 	CustomerService customerService;
 	
-	@RequestMapping("/login")
-	public String login(){
+	@RequestMapping("/Login")
+	public String login() {
 		return "login";
 	}
-
+	
 	
 	@RequestMapping("/LoginController")
 	public void login(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String message = "";
-		
+		HttpSession session = request.getSession();
 		Customer customer = customerService.findOneCustomer(username, password);
 		
 		if(customer != null && customer.getStatus() == false)
@@ -41,20 +42,20 @@ public class LoginController {
 			{	
 				Integer characterid = customer.getCharacterid();
 				String character = customerService.findCustomerCharacter(characterid);
-				if("user".equals(character)){					
-					request.getSession().setAttribute("customer", customer);
-					request.getSession().setAttribute("customer.id", customer.getId());
-					
-					request.getRequestDispatcher("listBook").forward(request, response);
-					return ;
+				if("user".equals(character)){				
+				
+					session.setAttribute("customer.id",customer.getId());
+					session.setAttribute("customer",customer);
+					response.sendRedirect(request.getContextPath()+"/listBook");
+					return;
 				}
 				else if("manager".equals(character)){
-					request.getSession().setAttribute("customer", customer);
-					request.getSession().setAttribute("customer.id", customer.getId());
-					request.getSession().setAttribute("managerFlag", "true");
+					session.setAttribute("customer.id",customer.getId());
+					session.setAttribute("customer",customer);
+					session.setAttribute("managerFlag", "true");
 			
-					request.getRequestDispatcher("manager").forward(request, response);
-					return ;
+					response.sendRedirect(request.getContextPath()+"/manager");
+					return;
 				}
 			}
 			else
@@ -71,7 +72,8 @@ public class LoginController {
 			message = "no";
 			request.setAttribute("message", message);
 		}
-		request.getRequestDispatcher("login").forward(request, response);
+		request.getRequestDispatcher("Login").forward(request, response);
+		return;
 	}
 
 	

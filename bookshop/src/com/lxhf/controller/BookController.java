@@ -7,6 +7,9 @@ import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +38,9 @@ public class BookController {
 		if (request.getSession().getAttribute("managerFlag") == null) {
 			return "login";
 		}
-		System.out.println("**********" + pageNum);
 		Page page = bookService.findPageBook(pageNum);
 		
-		
-		
+			
 		System.out.println(page);
 		model.addAttribute("page", page);
 		return "manager/showBooks";
@@ -58,12 +59,11 @@ public class BookController {
 	
 	@RequestMapping("manager/AddBookController")
 	public String addsBook(HttpServletRequest request, Book book, Integer categoryId, MultipartFile picture_b, MultipartFile picture_w) throws IllegalStateException, IOException{
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		String pictureFile_name =  picture_b.getOriginalFilename();
-		System.out.println("####################categoryid" + categoryId);
 		if(pictureFile_name == null|| pictureFile_name.equals("")){
 	        //have no small picture
 	    }else{
@@ -78,7 +78,6 @@ public class BookController {
 	    }
 		
 		String image_w_name =  picture_w.getOriginalFilename();
-		System.out.println("####################categoryid" + categoryId);
 		if(image_w_name == null|| image_w_name.equals("")){
 	        //have no big picture
 	    }else{
@@ -97,15 +96,14 @@ public class BookController {
 		Category category = categoryService.getCategoryById(categoryId);
 		book.setCategory(category);
 		
-		System.out.println("===============" + book);
 		bookService.addBook(book);
 		return "redirect:addBook";
 	}
 	
 	@RequestMapping("manager/deleteBook")
 	public String deleteBook(Integer bookId, HttpServletRequest request) {
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		bookService.deleteBook(bookId);
@@ -114,22 +112,21 @@ public class BookController {
 	
 	@RequestMapping("manager/updateBookIndex")
 	public String updateBookIndex(Integer bookId, Model model, HttpServletRequest request) {
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		List<Category> categorys = categoryService.findCategoryAll();
 		model.addAttribute("categorys", categorys);
 		Book book = bookService.getBookById(bookId);
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + book);
 		model.addAttribute("book",book);
 		return "manager/updateBook";
 	}
 	
 	@RequestMapping("manager/updateBook")
 	public String updateBook(HttpServletRequest request, Book book, Integer categoryId, MultipartFile picture_b, MultipartFile picture_w) throws IllegalStateException, IOException {
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 
@@ -186,26 +183,16 @@ public class BookController {
 		Page page = bookService.findPageBook(current);	
 		model.addAttribute("page", page);
 		model.addAttribute("categorys", list);
-//		request.getSession().setAttribute("categorys", list);
-//		request.getSession().setAttribute("page", page);
-//		request.getRequestDispatcher("listBook").forward(request, response);
-//		System.out.println("6666666666666666" + page);
 		return "listBook";
 	}
 	
 	@RequestMapping("client/ShowController")
 	public String showClient(Integer current, Model model) throws ServletException, IOException{
 
-		System.out.println("88888888888888888" + current);
 		List<Category> list = categoryService.findCategoryAll();
 		Page page = bookService.findPageBook(current);	
 		model.addAttribute("page", page);
 		model.addAttribute("categorys", list);
-		/*request.getSession().setAttribute("categorys", list);
-		request.getSession().setAttribute("page", page);
-		
-		request.getRequestDispatcher("listBook").forward(request, response);*/
-		System.out.println(page);
 		return "listBook";
 	}
 	
@@ -214,7 +201,6 @@ public class BookController {
 
 		Page page = bookService.findPageCategory(categoryId,Integer.valueOf(current));
 		
-		System.out.println(" ###################################!!!!!" + page);
 		model.addAttribute("page", page);
 		//����Ҫ�����з��������Ϣ
 		List<Category> categorys = categoryService.findCategoryAll();
@@ -228,10 +214,6 @@ public class BookController {
 		if (current == null) {
 			current = 1;
 		}
-		System.out.println("!!!!!!!!!!!!!!!!!!!" + relatedField + field + current);
-//		Set<Book> setbooks = new HashSet<Book>();
-//		List<Book> books = new ArrayList<Book>();
-//		books.addAll(setbooks);
 
 		switch (field) {
 		case "all":
@@ -278,7 +260,8 @@ public class BookController {
 	}
 	
 	@RequestMapping("showDetail")
-	public String showBookDetail(Integer id, Model model){
+	public String showBookDetail(HttpServletRequest request,HttpServletResponse response,Integer id, Model model){
+		HttpSession session = request.getSession();
 		Book book = bookService.getBookById(id);
 		model.addAttribute("book", book);
 		return "desc";

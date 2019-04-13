@@ -28,7 +28,7 @@
 	crossorigin="anonymous"></script>
 <base href="<%=basePath%>">
 
-<title>My JSP 'index.jsp' starting page</title>
+<title>修改图书</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -80,6 +80,16 @@ $(function () {
 </head>
 
 <body>
+	 <%
+		String message = (String)request.getSession().getAttribute("message");
+		if(message == "logfalse"){
+			%>
+	 			<script type="text/javascript">
+						alert("注销失败!");
+				 </script>
+			<%
+		}
+	 %>
 	<nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -90,12 +100,12 @@ $(function () {
 		<ul class="nav navbar-nav navbar-right">
 				
 				<c:if test="${empty managerFlag }">
-					<li><a href="${pageContext.request.contextPath }/login">登录</a></li>
-					<li><a href="${pageContext.request.contextPath }/regist">注册</a></li>
+					<li><a href="${pageContext.request.contextPath }/Login">登录</a></li>
+					<li><a href="${pageContext.request.contextPath }/Regist">注册</a></li>
 				</c:if>
 				<c:if test="${not empty managerFlag }">
 					<li><a href="#">昵称：${customer.nickname }</a></li>
-					<li><a href="${pageContext.request.contextPath }/logout">注销</a></li>
+					<li><a href="${pageContext.request.contextPath }/LogoutController">注销</a></li>
 				</c:if>
 
 		</ul>

@@ -1,7 +1,10 @@
 package com.lxhf.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,14 +21,8 @@ import com.lxhf.service.CategoryService;
 public class HeaderController {
 	
 	@RequestMapping("/")
-	public String welcomeheader1(){
-		return "redirect:listBook";
-	}
-	
-	@RequestMapping("/header")
-	public String welcomeheader2(Model model){
-
-		return "header";
+	public void welcomeheader1(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		request.getRequestDispatcher("listBook").forward(request, response);
 	}
 	
 }

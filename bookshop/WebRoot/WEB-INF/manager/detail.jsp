@@ -28,7 +28,7 @@
 	crossorigin="anonymous"></script>
 <base href="<%=basePath%>">
 
-<title>My JSP 'listCategory.jsp' starting page</title>
+<title>图书详情</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -46,6 +46,16 @@
 </head>
 
 <body>
+	 <%
+		String message = (String)request.getSession().getAttribute("message");
+		if(message == "logfalse"){
+			%>
+	 			<script type="text/javascript">
+						alert("注销失败!");
+				 </script>
+			<%
+		}
+	 %>
 	<nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="navbar-header">

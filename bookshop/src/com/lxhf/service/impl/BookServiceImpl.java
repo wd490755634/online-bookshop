@@ -59,7 +59,6 @@ public class BookServiceImpl implements BookService {
 		List<Book> books = bookMapper.findPage((current - 1) * Constants.PAGESIZE, Constants.PAGESIZE);
 		Page page = new Page(totalPage, books);
 
-		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaa" + page);
 		return page;
 		
 	}
@@ -74,12 +73,10 @@ public class BookServiceImpl implements BookService {
 
 		List<Book> books = bookMapper.findPageCategory(categoryId, (current - 1) * Constants.CATEGORYPAGESIZE,
 				Constants.CATEGORYPAGESIZE);
-		System.out.println("category    current   size  " + categoryId + categoryCount
-				+ (current - 1) * Constants.CATEGORYPAGESIZE);
+
 
 		Page page = new Page(totalPage, books);
 
-		System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbb" + page);
 		return page;
 	}
 
@@ -92,7 +89,6 @@ public class BookServiceImpl implements BookService {
 		List<Book> books = bookMapper.findPageBookByName(name, (current - 1) * Constants.PAGESIZE, Constants.PAGESIZE);
 		Page page = new Page(totalPage, books);
 
-		System.out.println("cccccccccccccccccccccccc" + page);
 		return page;
 	}
 
@@ -106,7 +102,6 @@ public class BookServiceImpl implements BookService {
 				Constants.PAGESIZE);
 		Page page = new Page(totalPage, books);
 
-		System.out.println("dddddddddddddddddddddddddd" + page);
 		return page;
 	}
 
@@ -119,7 +114,6 @@ public class BookServiceImpl implements BookService {
 		List<Book> books = bookMapper.findPageBookByDesc(desc, (current - 1) * Constants.PAGESIZE, Constants.PAGESIZE);
 		Page page = new Page(totalPage, books);
 
-		System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeee" + page);
 		return page;
 	}
 
@@ -133,7 +127,6 @@ public class BookServiceImpl implements BookService {
 				Constants.PAGESIZE);
 		Page page = new Page(totalPage, books);
 
-		System.out.println("ffffffffffffffffffffffffff" + page);
 		return page;
 	}
 
@@ -146,8 +139,6 @@ public class BookServiceImpl implements BookService {
 		List<Book> books = bookMapper.findPageBookByCDesc(relatedField, (current - 1) * Constants.PAGESIZE,
 				Constants.PAGESIZE);
 		Page page = new Page(totalPage, books);
-
-		System.out.println("gggggggggggggggggggggggggg" + page);
 		return page;
 	}
 
@@ -161,7 +152,6 @@ public class BookServiceImpl implements BookService {
 				Constants.PAGESIZE);
 		Page page = new Page(totalPage, books);
 
-		System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" + page);
 		return page;
 	}
 	
@@ -175,7 +165,6 @@ public class BookServiceImpl implements BookService {
 				Constants.PAGESIZE);
 		Page page = new Page(totalPage, books);
 
-		System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiii" + page);
 		return page;
 	}
 }

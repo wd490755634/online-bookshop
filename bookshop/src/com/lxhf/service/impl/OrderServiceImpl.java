@@ -51,8 +51,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public void updateStatusById(Integer id) {
-		orderMapper.updateOrderStatusById(id);
+	public void updateStatusById(Integer id,Integer status) {
+		orderMapper.updateOrderStatusById(id,status);
 		
 	}
 

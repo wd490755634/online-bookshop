@@ -49,6 +49,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 更新订单状态 -->
 	<update id="updateOrderStatusById" parameterType="int">
-		update orders SET status = 1 where id = #{id}
+		update orders SET status = #{status} where id = #{id}
 	</update>
 </mapper>

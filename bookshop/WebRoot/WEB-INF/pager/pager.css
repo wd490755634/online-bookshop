@@ -1,6 +1,6 @@
 .bold {font-weight: 900;}
 .divBody {
-	background: url(/goods/images/paginating_bg.png) repeat-x;
+	background: url(/bookshop/images/paginating_bg.png) repeat-x;
 	border-top: 2px solid #FE7C2C;
 	height: 35px;
 	width: 100%;
@@ -58,5 +58,5 @@
 	border: 1px solid #c1c1c1;
 	padding:1px 4px 1px 4px;
 	color: #555555;
-	background: url(/goods/images/qd.png) repeat-x;
+	background: url(/bookshop/images/qd.png) repeat-x;
 }

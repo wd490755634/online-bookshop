@@ -15,5 +15,5 @@ public interface OrderService {
 
 	public List<Orders> findOrderIdByCustomerId(Integer customerid);
 	
-	public void updateStatusById(Integer id);
+	public void updateStatusById(Integer id,Integer status);
 }

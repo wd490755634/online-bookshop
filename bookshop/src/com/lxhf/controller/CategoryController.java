@@ -3,6 +3,7 @@ package com.lxhf.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,8 @@ public class CategoryController {
 
 	@RequestMapping("manager/index")
 	public String showIndex(HttpServletRequest request) {
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		return "manager/index";
@@ -33,7 +34,8 @@ public class CategoryController {
 
 	@RequestMapping("manager")
 	public String addCatelogIndex(HttpServletRequest request) {
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		return "manager/index";
@@ -41,7 +43,8 @@ public class CategoryController {
 
 	@RequestMapping("manager/QueryController")
 	public String queryCatalog(Model model, HttpServletRequest request) {
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		List<Category> list = categoryService.findCategoryAll();
@@ -51,8 +54,8 @@ public class CategoryController {
 
 	@RequestMapping("manager/addcategory")
 	public String addCategory(Category category, HttpServletRequest request) {
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		categoryService.addCategory(category);
@@ -61,20 +64,19 @@ public class CategoryController {
 
 	@RequestMapping("manager/updateCategoryIndex")
 	public String updateCategoryIndex(Integer categoryId, Model model, HttpServletRequest request) {
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		Category category = categoryService.getCategoryById(categoryId);
-		System.out.println("������������������������������������������������������" + category);
 		model.addAttribute("category", category);
 		return "manager/updateCategory";
 	}
 
 	@RequestMapping("manager/updateCategory")
 	public String updateCategory(Category category, HttpServletRequest request) {
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		categoryService.updateCategory(category);
@@ -83,8 +85,8 @@ public class CategoryController {
 
 	@RequestMapping("manager/deleteCategory")
 	public String deleteCategory(Integer categoryId, HttpServletRequest request) {
-
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		bookService.deleteBookByCategoryId(categoryId);
@@ -94,11 +96,11 @@ public class CategoryController {
 
 	@RequestMapping("manager/searchCategory")
 	public String findCategory(String relatedField, Model model, String field, HttpServletRequest request){
-		if (request.getSession().getAttribute("managerFlag") == null) {
+		HttpSession session = request.getSession();
+		if (session.getAttribute("managerFlag") == null) {
 			return "login";
 		}
 		
-		System.out.println("!!!!!!!!!!!!!!!!!!!" + relatedField + field);
 		switch (field) {
 		case "all":
 			List<Category> categorysAll = categoryService.findCategoryByAll(relatedField);
@@ -120,7 +122,6 @@ public class CategoryController {
 			
 		return "manager/listCategory";
 	}
-	
-	//=================================================
+
 	
 }

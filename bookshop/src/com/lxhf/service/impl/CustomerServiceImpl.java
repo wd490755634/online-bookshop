@@ -28,7 +28,6 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Boolean updateCustomerStatus(Customer customer,Boolean status) throws Exception{
 		if (customerMapper.updateCustomerStatusById(customer.getId(),status) == true) {
-			int i = 1/0;
 			return true;
 		}
 		return false;

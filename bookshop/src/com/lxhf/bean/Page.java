@@ -26,6 +26,7 @@ public class Page {
 		this.totalPage = totalPage;
 		this.books = books;
 	}
+	
 	public Page() {
 		super();
 	}

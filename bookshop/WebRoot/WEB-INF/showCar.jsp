@@ -12,7 +12,6 @@
 	 -->
 	<c:if test="${empty car.carItems }">
 		您没有购买商品
-		${car.carItems }
 	</c:if>
 	<c:if test="${not empty car.carItems }">
 		<table class="table">
@@ -44,9 +43,14 @@
   			<tr style="right;">
   				<td>总数量:${car.totalNum }</td>
   				<td>总金额:${car.totalMoney }</td>
-  				<td><a href="${pageContext.request.contextPath }/OrderController?op=order&num=${car.totalNum }&money=${car.totalMoney }">去结算</a></td>
+  				<!--<td><a href="${pageContext.request.contextPath }/OrderController?op=order&num=${car.totalNum }&money=${car.totalMoney }">去结算</a></td>
+  				-->
   			</tr>
   		</table>
+  		<form class="col-sm-12" action="${pageContext.request.contextPath }/OrderController" method="post">
+		<input type="hidden" name="car" value="${car}" />
+		<input class="btn btn-info" type="submit" value="去结算"/>
+		</form>
 	</c:if>
 </center>
   </body>

@@ -8,8 +8,6 @@
 %>
 <jsp:include page="header.jsp"></jsp:include>
 <center>
-	请输入发货地址<br/>
-	请输入联系人手机号码<br/>
 	<c:if test="${empty orders}">
 		您没有购买商品
 	</c:if>
@@ -20,6 +18,7 @@
 	            <tr>
   				<th>订单号</th>
   				<th>订单状态</th>
+  				<th>订单操作</th>
   				<th>商品图片</th>
   				<th>商品单价</th>
   				<th>商品数量</th>
@@ -35,6 +34,7 @@
 					<c:if test="${item.status == 1}">
 	                <td rowspan="${fn:length(item.orderItems)}" align="center">已支付</td>
 	                </c:if>
+	                <td rowspan="${fn:length(item.orderItems)}" align="center"><a href="${pageContext.request.contextPath }/DeleteOrders?orderid=${item.id }">删除</td>
 	                <c:forEach items="${item.orderItems}" var="orderItem" >
 	                    <td align="center"><img src="<%=path %>${orderItem.book.image_b}" width=50 /></td>
 	                    <td align="center">${orderItem.book.currprice }</td>
@@ -47,5 +47,6 @@
 	</div>
 	</c:if>
 </center>
+
   </body>
 </html>

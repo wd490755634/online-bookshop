@@ -19,9 +19,8 @@ public class RegistController {
 
 	@Autowired
 	CustomerService customerService;
-	
-	@RequestMapping("/regist")
-	public String regit(){
+	@RequestMapping("/Regist")
+	public String regist() {
 		return "regist";
 	}
 	
@@ -49,8 +48,8 @@ public class RegistController {
 					customer1.setAddress(address);
 					customer1.setStatus(false);
 					customerService.addCustomer(customer1);
-					request.getRequestDispatcher("listBook").forward(request, response);
-					return ;
+					response.sendRedirect(request.getContextPath()+"/listBook");
+					return;
 				}
 				else if(phonenum!=""&&(phonenum.length()!=11)) {
 					message = "phoneillegal";
@@ -60,8 +59,8 @@ public class RegistController {
 					request.setAttribute("message", message);
 				}
 			}
-		request.getRequestDispatcher("regist").forward(request, response);
-		return ;
+			request.getRequestDispatcher("Regist").forward(request, response);
+			return;
 	}
 }
 	

@@ -3,7 +3,8 @@
 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<jsp:include page="header.jsp"></jsp:include>
+<center>
   <head>
     <title>图书详细</title>
     
@@ -25,13 +26,14 @@
   </head>
   
   <body>
-  <div class="divBookName">${book.name }</div>
-  <div>
+  <div class="divBookName ">${book.name }</div>
+ 
+  <div class="col-md-offset-2">
     <img align="top" src="<c:url value='/${book.image_w }' />"  width = 400 class="img_image_w">
     <div class="divBookDesc">
 	    <ul>
 	    	<li>商品编号：${book.id }</li>
-	    	<li>传智价：<span class="price_n">&yen;${book.currprice }</span></li>
+	    	<li>商城价：<span class="price_n">&yen;${book.currprice }</span></li>
 	    	<li>定价：<span class="spanPrice">&yen;${book.price }</span>　折扣：<span style="color: #c30;">${book.discount }</span>折</li>
 	    </ul>
 		<hr class="hr1">
@@ -70,11 +72,24 @@
 			<form id="form1" action="<c:url value='/BuyController'/>" method="post">
 				<input type="hidden" name="bookId" value="${book.id }">
   				我要买：<input id="cnt" style="width: 40px;text-align: center;" type="text" name="quantity" value="1">件
+  				<button id="btn" class="col-md-offset-2" ></button>
   			</form>
-  			<a id="btn" href="javascript:$('#form1').submit();"></a>
+  			 
   		</div>
+  		
 	</div>
   </div>
+	 <%
+		String message = (String)request.getAttribute("message");
+		if(message == "overnum"){
+			%>
+	 			<script type="text/javascript">
+						alert("购物车种类已达上限!最多添加5种!");
+				 </script>
+			<%
+		}
+	 %>
   </body>
+</center>
 </html>
 </i>

@@ -31,7 +31,7 @@
 	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 	crossorigin="anonymous">
 
-<title>My JSP 'header.jsp' starting page</title>
+<title>丁丁书城</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -50,7 +50,7 @@
 
 <body>
 	 <%
-		String message = (String)request.getAttribute("message");
+		String message = (String)request.getSession().getAttribute("message");
 		if(message == "logfalse"){
 			%>
 	 			<script type="text/javascript">
@@ -70,14 +70,13 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="${pageContext.request.contextPath }">当当书城</a>
+			<a class="navbar-brand" style="cursor:pointer;"> 
+			<span class="glyphicon glyphicon-th-large"></span>丁丁书城</a>
 		</div>
-
 		</script>
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
-
 			<c:if test="${param.categoryFlag != null}">
 				<ul class="nav navbar-nav">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -98,15 +97,17 @@
 
 			<ul class="nav 
 				navbar-nav navbar-right">
-				<li><a href="${pageContext.request.contextPath }/showCar">购物车</a></li>
-				<li><a href="${pageContext.request.contextPath }/showOrder">订单管理</a></li>
+				<li><a onclick="javascript:history.back(-1);" style="cursor:pointer;">返回</a></li>
+				<li><a href="${pageContext.request.contextPath }/">首页</a></li>
+				<li><a href="${pageContext.request.contextPath }/showMyCar">购物车</a></li>
+				<li><a href="${pageContext.request.contextPath }/showMyOrder">订单管理</a></li>
 				<c:if test="${empty customer }">
-					<li><a href="${pageContext.request.contextPath }/login">登录</a></li>
-					<li><a href="${pageContext.request.contextPath }/regist">注册</a></li>
+					<li><a href="${pageContext.request.contextPath }/Login">登录</a></li>
+					<li><a href="${pageContext.request.contextPath }/Regist">注册</a></li>
 				</c:if>
 				<c:if test="${not empty customer }">
 					<li><a href="#">昵称：${customer.nickname }</a></li>
-					<li><a href="${pageContext.request.contextPath }/logout">注销</a></li>
+					<li><a href="${pageContext.request.contextPath }/LogoutController">注销</a></li>
 				</c:if>
 			</ul>
 

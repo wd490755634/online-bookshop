@@ -29,7 +29,6 @@
 		</div>
 
 	</center>
-
 	<body>
 	 <%
 		String message = (String)request.getAttribute("message");

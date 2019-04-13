@@ -4,6 +4,8 @@ import com.lxhf.bean.Orders;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.lxhf.bean.OrderItem;
 
 public interface OrderMapper {
@@ -16,6 +18,6 @@ public interface OrderMapper {
 
 	public List<Orders> findOrderByCustomeiId(Integer customerid);
 	
-	public void updateOrderStatusById(Integer id);
+	public void updateOrderStatusById(@Param("id")Integer id,@Param("status")Integer status);
 
 }
